@@ -1,13 +1,25 @@
 package springsecurity.white.form;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import springsecurity.white.account.Account;
+import springsecurity.white.account.AccountContext;
+import springsecurity.white.account.AccountRepository;
 
 import java.security.Principal;
 
 @Controller
 public class SampleController {
+
+    private final SampleService sampleService;
+    private final AccountRepository accountRepository;
+
+    public SampleController(SampleService sampleService ,AccountRepository accountRepository) {
+        this.sampleService = sampleService;
+        this.accountRepository  = accountRepository;
+    }
 
     @GetMapping("/")
     public String index(Model model , Principal principal){
@@ -26,6 +38,8 @@ public class SampleController {
     @GetMapping("/dashboard")
     public String dashboard(Model model , Principal principal){
         model.addAttribute("message" , "Hello"+ principal.getName());
+        //AccountContext.setAccount(accountRepository.findByUsername(principal.getName()));
+        sampleService.dashboard();
         return "dashboard";
     }
     @GetMapping("/admin")
