@@ -66,4 +66,15 @@ public class SampleController {
         *
         * */
     }
+    @GetMapping("/aysnc-service")
+    @ResponseBody
+    public Callable<String> asyncService(){
+        SecurityLogger.log("MVC before");
+        sampleService.asyncService();
+        SecurityLogger.log("MVC after");
+        return () -> {
+            SecurityLogger.log("Callable");
+            return "Async Service";
+        };
+    }
 }

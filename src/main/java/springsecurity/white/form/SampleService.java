@@ -1,11 +1,13 @@
 package springsecurity.white.form;
 
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import springsecurity.white.account.Account;
 import springsecurity.white.account.AccountContext;
+import springsecurity.white.common.SecurityLogger;
 
 @Service
 public class SampleService {
@@ -33,5 +35,12 @@ public class SampleService {
         UserDetails userDetails = (UserDetails)authentication.getPrincipal();
 
         System.out.println("userDetails = " + userDetails);
+    }
+
+    @Async
+    //특정 빈을 호출할때 비동기로 호출을 한다.
+    public void asyncService() {
+        SecurityLogger.log("Async Service");
+        System.out.println("async Service is Called..");
     }
 }
