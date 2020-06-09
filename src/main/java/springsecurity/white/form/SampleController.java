@@ -1,14 +1,18 @@
 package springsecurity.white.form;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import springsecurity.white.account.Account;
 import springsecurity.white.account.AccountContext;
 import springsecurity.white.account.AccountRepository;
+import springsecurity.white.common.SecurityLogger;
 
 import java.security.Principal;
+import java.util.concurrent.Callable;
 
 @Controller
 public class SampleController {
@@ -46,5 +50,20 @@ public class SampleController {
     public String admin(Model model, Principal principal){
         model.addAttribute("message" , "Hello Admin"+principal.getName());
         return "admin";
+    }
+    @GetMapping("/aysnc-handler")
+    @ResponseBody
+    public Callable<String> asyncHandler(){
+        /*
+        * 톰캣이 할당해준 Nio 스레드
+        * */
+        SecurityLogger.log("MVC");
+        return () -> {
+            SecurityLogger.log("Callable");
+            return "Async Handler";
+        };
+        /*
+        *
+        * */
     }
 }
