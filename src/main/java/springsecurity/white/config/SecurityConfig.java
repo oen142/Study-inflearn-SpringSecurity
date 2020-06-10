@@ -11,7 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import springsecurity.white.account.AccountService;
 
 @Configuration
-@Order(Ordered.HIGHEST_PRECEDENCE -10)
+@Order(Ordered.HIGHEST_PRECEDENCE - 10)
 //@EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -27,10 +27,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-         /*       .mvcMatchers("/", "/info*", "/account/**").permitAll()
-                .mvcMatchers("/admin").hasRole("ADMIN")
-         */       .anyRequest().permitAll();
+                /*       .mvcMatchers("/", "/info*", "/account/**").permitAll()
+                       .mvcMatchers("/admin").hasRole("ADMIN")
+                */.anyRequest().permitAll();
         http.formLogin();
+
+        http.httpBasic();
+        http.logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/");
         http.httpBasic();
     }
 
