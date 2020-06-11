@@ -1,12 +1,15 @@
 package springsecurity.white.form;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import springsecurity.white.account.Account;
 import springsecurity.white.account.AccountContext;
 import springsecurity.white.account.AccountRepository;
+import springsecurity.white.account.CurrentUser;
 
 import java.security.Principal;
 
@@ -46,5 +49,12 @@ public class SampleController {
     public String admin(Model model, Principal principal){
         model.addAttribute("message" , "Hello Admin"+principal.getName());
         return "admin";
+    }
+
+    @GetMapping
+    public String principal(Model model ,@CurrentUser Account account){
+
+        SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return "test";
     }
 }

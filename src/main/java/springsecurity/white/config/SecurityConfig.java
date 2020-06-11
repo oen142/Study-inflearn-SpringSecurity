@@ -1,9 +1,11 @@
 package springsecurity.white.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -16,21 +18,14 @@ import springsecurity.white.account.AccountService;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
-
-    /*private final AccountService accountService;
-
-    public SecurityConfig(AccountService accountService) {
-        this.accountService = accountService;
-    }*/
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests()
-                /*       .mvcMatchers("/", "/info*", "/account/**").permitAll()
-                       .mvcMatchers("/admin").hasRole("ADMIN")
-                */.anyRequest().permitAll();
-        http.formLogin();
+                .authorizeRequests().anyRequest().permitAll();
+        http.formLogin()
+                .usernameParameter("my-username")
+                .passwordParameter("my-password")
+                .loginPage("/sign-in");
 
         http.httpBasic();
         http.logout()
@@ -39,8 +34,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.httpBasic();
     }
 
-/*    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(accountService);
-    }*/
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
 }
