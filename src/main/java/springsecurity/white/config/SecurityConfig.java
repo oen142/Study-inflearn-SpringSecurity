@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import springsecurity.white.account.Account;
 import springsecurity.white.account.AccountService;
 
 @Configuration
@@ -28,10 +29,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/sign-in");
 
         http.httpBasic();
+        http.rememberMe()
+                .rememberMeParameter("remember")
+//                .userDetailsService(accountService)
+//                .tokenValiditySeconds()//기본값 2week
+//                .useSecureCookie() //https일때 사용하는 것이좋다.
+        //       .alwaysRemember()//기본값 false 폼에서 안해도 기본적으로 된다.
+        ;
         http.logout()
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/");
         http.httpBasic();
+
     }
 
     @Bean
