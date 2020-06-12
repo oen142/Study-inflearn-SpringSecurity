@@ -10,8 +10,10 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter;
 import springsecurity.white.account.Account;
 import springsecurity.white.account.AccountService;
+import springsecurity.white.common.LoggingFilter;
 
 @Configuration
 @Order(Ordered.HIGHEST_PRECEDENCE - 10)
@@ -21,6 +23,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.addFilterBefore(new LoggingFilter(), WebAsyncManagerIntegrationFilter.class);
         http
                 .authorizeRequests().anyRequest().permitAll();
         http.formLogin()
